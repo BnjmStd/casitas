@@ -1,0 +1,222 @@
+---
+import Menu from "../icons/Menu-icons.astro";
+import Close from "../icons/Close-icons.astro";
+
+const seccion = ["Home", "Blog", "Nosotros"];
+---
+
+<nav class="nav">
+    <div class="nav__container">
+        <figure class="nav__figure">
+            <span class="nav__logo"> Logo </span>
+        </figure>
+        <label class="nav__toggle" for="menu-input">
+            <input type="checkbox" id="menu-input" class="nav__input" />
+            <div class="icon-container">
+                <div class="icon-open">
+                    <Menu />
+                </div>
+                <div class="icon-close">
+                    <Close />
+                </div>
+            </div>
+        </label>
+
+        <ul class="nav__list">
+            {
+                seccion.map((x, xid) => {
+                    return (
+                        <li class="nav__item" id={`${xid}`}>
+                            <a href="#" class="nav__link">
+                                {x}
+                            </a>
+                        </li>
+                    );
+                })
+            }
+        </ul>
+
+        <div class="full__width">
+            {
+                seccion.map((x, xid) => {
+                    return (
+                        <li class="full__item" id={`${xid}`}>
+                            <a href="#" class="full__link">
+                                {x}
+                            </a>
+                        </li>
+                    );
+                })
+            }
+        </div>
+    </div>
+</nav>
+
+<style>
+	.nav {
+		background-color: #000;
+		color: white;
+
+		.nav__container {
+			width: min(90%, 1200px);
+			margin: 0 auto;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			height: 80px;
+			--transform-menu-links: translate(-100%);
+
+			&:has(:checked) {
+				--transform-menu-links: translate(0);
+			}
+
+			& > :is(.nav__figure, .nav__toggle) {
+				z-index: 10;
+			}
+		}
+
+		.nav__toggle {
+			width: 30px;
+			height: 30px;
+			cursor: pointer;
+			transition: background-image 0.5s;
+
+			.nav__input {
+				display: none;
+			}
+		}
+
+		.nav__list {
+			transform: var(--transform-menu-links);
+			position: fixed;
+			inset: 0;
+			display: grid;
+			place-content: center;
+			gap: 0.5rem;
+			text-align: center;
+			background-color: #000;
+			list-style: none;
+			padding: 1.5rem 5%;
+			transition: transform 0.5s;
+
+			.nav__item {
+				border: 0.1px solid rgba(182, 181, 180, 0.692);
+				padding: 25px 100px;
+				border-radius: 20px;
+
+				&:hover {
+					background-color: rgba(182, 181, 180, 0.692);
+				}
+
+				.nav__link {
+					color: white;
+					text-decoration: none;
+				}
+			}
+		}
+	}
+
+	.icon-container {
+		position: relative;
+		width: 30px;
+		height: 30px;
+
+		.icon-open,
+		.icon-close {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.icon-open {
+			transition:
+				opacity 0.5s ease,
+				visibility 0.5s ease;
+		}
+
+		.icon-close {
+			opacity: 0;
+			visibility: hidden;
+			transition:
+				opacity 0.5s ease,
+				visibility 0.5s ease;
+		}
+	}
+
+	.nav__input:checked ~ .icon-container .icon-open {
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	.nav__input:checked ~ .icon-container .icon-close {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.full__width {
+		display: none;
+	}
+
+	@media (width > 760px) {
+		.full__width {
+			display: flex;
+			gap: 10px;
+			align-items: center;
+			justify-content: center;
+
+			.full__item {
+				list-style: none;
+			}
+
+			.full__link {
+				position: relative;
+				padding: 10px;
+				border-radius: 16px;
+				text-decoration: none;
+				color: white;
+
+				&::after {
+					position: absolute;
+                    margin-top: 4px;
+					content: "";
+					height: 4px;
+					width: 0;
+					background-color: rgb(187, 2, 181);
+					display: block;
+					transition: all .3s;
+				}
+
+				&:hover::after {
+					background-color: rgba(182, 181, 180, 0.692);
+					width: 100%;
+				}
+			}
+		}
+
+		.nav__list {
+			opacity: 0;
+			position: static;
+			transform: none;
+			gap: 1rem;
+			padding: 0;
+		}
+
+		.nav__toggle {
+			display: none;
+		}
+
+		.nav__item {
+			border: none;
+			padding: 0;
+
+			&:hover {
+				background-color: transparent;
+			}
+
+			.nav__link {
+				padding: 0.5rem 1rem;
+			}
+		}
+	}
+</style>
